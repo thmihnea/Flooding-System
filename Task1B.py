@@ -10,44 +10,8 @@ distances from a geographical location point.
 from floodsystem.geo import stations_by_distance
 from floodsystem.stationdata import build_station_list
 from floodsystem.station import MonitoringStation
+from floodsystem.utils import prettified_distance_data
 import haversine
-
-def extract_result(list: list[tuple[MonitoringStation, float]]) -> list[tuple[str, str, float]]:
-    """
-    
-    This utility function takes a list of tuples and extracts
-    the required data for processing within this task, i.e.
-    from the list of tuples containing MonitoringStation objects
-    and the distances themselves, it extracts a list of tuples
-    containing the name, town, and distance for each station
-    relative to the specified point a-priori.
-
-    Parameters:
-
-    list:   a list of tuples containing each MonitoringStation
-            object and its distance relative to a specified
-            point
-
-    Returns:
-
-    list[tuple[str, str, float]]
-    
-    """
-    results: list[tuple[str, str, float]] = []
-
-    for entry in list:
-        station: MonitoringStation = entry[0]
-        distance: float = entry[1]
-
-        result = (
-            station.name,
-            station.town,
-            distance
-        )
-
-        results.append(result)
-
-    return results
 
 def run():
     """
@@ -69,8 +33,8 @@ def run():
 
     # Print the top ten closest stations after extracting
     # the relevant data with the utility function.
-    closest: list[tuple[str, str, float]] = extract_result(distances[:10])
-    furthest: list[tuple[str, str, float]] = extract_result(distances[-10:])
+    closest: list[tuple[str, str, float]] = prettified_distance_data(distances[:10])
+    furthest: list[tuple[str, str, float]] = prettified_distance_data(distances[-10:])
 
     print(f"The closest stations are: {closest}. \n")
     print(f"The furthest stations are: {furthest}. \n")

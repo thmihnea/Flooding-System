@@ -10,27 +10,7 @@ within 10km from Cambridge City Centre.
 from floodsystem.geo import stations_within_radius
 from floodsystem.stationdata import build_station_list
 from floodsystem.station import MonitoringStation
-
-def extract_data(data: list[MonitoringStation]) -> list[str]:
-    """
-    
-    Given an input list of data representing
-    MonitoringStation objects, return the names of all
-    stations within that list, sorted in lexicographical order.
-
-    Parameters:
-
-    data:   a list of all the stations
-
-    Return:
-
-    list[str]
-    
-    """
-
-    stations: list[str] = [station.name for station in data]
-    stations.sort()
-    return stations
+from floodsystem.utils import extract_station_names
 
 def run():
     """
@@ -56,7 +36,7 @@ def run():
     required_output: list[str] = ['Bin Brook', 'Cambridge Baits Bite', "Cambridge Byron's Pool",
                        'Cambridge Jesus Lock', 'Comberton', 'Dernford', 'Girton',
                        'Haslingfield Burnt Mill', 'Lode', 'Oakington', 'Stapleford']
-    extracted_data: list[str] = extract_data(within_radius)
+    extracted_data: list[str] = extract_station_names(within_radius)
     assert extracted_data == required_output
     print(extracted_data)
 
