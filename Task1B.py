@@ -11,7 +11,6 @@ from floodsystem.geo import stations_by_distance
 from floodsystem.stationdata import build_station_list
 from floodsystem.station import MonitoringStation
 from floodsystem.utils import prettified_distance_data
-import haversine
 
 def run():
     """
