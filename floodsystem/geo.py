@@ -27,7 +27,8 @@ def stations_by_distance(stations:  list[MonitoringStation],
 
     Returns:
     
-    list[tuple[MonitoringStation, float]]
+    list[tuple[MonitoringStation, float]]:  a list of tuples containing
+                                            each station and the distance
 
     """
 
@@ -74,7 +75,7 @@ def stations_within_radius(stations: list[MonitoringStation],
 
     Return:
 
-    list[MonitoringStation]
+    list[MonitoringStation]:    a list containing each MonitoringStation
     
     """
 
@@ -101,6 +102,68 @@ def stations_within_radius(stations: list[MonitoringStation],
 
     return result
 
+def rivers_with_station(stations: list[MonitoringStation]) -> set[str]:
+    """
+    
+    Given a list of MonitoringStation objects, return a set
+    of strings containing the unique rivers that belong to
+    at least a station. 
+    Note that since this is a set, it will contain no duplicates.
+
+    Parameters:
+
+    stations:   the list containing all the station objects
+
+    Return:
+
+    set[str]:   a set containing each individual river
+
+    """
+
+    if not isinstance(stations, list):
+        raise RuntimeError("The given object is not of type list[MonitoringStation]!")
+    
+    rivers: set[str] = set()
+
+    for station in stations:
+        rivers.add(station.river)
+
+    return rivers
+
+def stations_by_river(stations: list[MonitoringStation]) -> dict[str, list[MonitoringStation]]:
+    """
+    
+    Given a list of MonitoringStation objects, this
+    function returns a dictionary containing Key-Value
+    pairs consisting of rivers (the key) and a list
+    of stations (the value). This represents a mapping
+    between a river and the stations that cross it.
+
+    Parameters:
+
+    stations:   the aforementioned list of objects
+
+    Return:
+
+    dict[str, list[MonitoringStation]]: a dictionary of river names
+                                        mapped to their stations
+    
+    """
+
+    if not isinstance(stations, list):
+        raise RuntimeError("The given object is not of type list[MonitoringStation]!")
+    
+    table: dict[str, list[MonitoringStation]] = dict()
+    
+    for station in stations:
+        river: str = station.river
+
+        if river not in table:
+            table[river] = [station]
+        else:
+            table[river].append(station)
+
+    return table
 
 
 

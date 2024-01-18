@@ -1,11 +1,11 @@
 """ 
 
 This file contains a series of unit tests designed specifically
-for the geo module within this project.
+for the geo.py module within this project.
 
 """
 
-from floodsystem.geo import stations_by_distance, stations_within_radius
+from floodsystem.geo import stations_by_distance, stations_within_radius, rivers_with_station, stations_by_river
 from floodsystem.station import MonitoringStation
 
 def test_distance():
@@ -61,3 +61,54 @@ def test_within_radius():
 
     # Assertion statement.
     assert within_radius_actual == within_radius
+
+def test_rivers_with_station():
+    """
+    This function tests whether or not the geo.py #rivers_with_station
+    function works normally.
+    """
+
+    # Construct fictitious data.
+    a = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "x", "a"
+    )
+    b = MonitoringStation(
+        "b", "b", "b", (1, 0), (0, 0), "x", "b"
+    )
+    c = MonitoringStation(
+        "c", "c", "c", (1, 1), (0, 0), "y", "c"
+    )
+
+    # Attribute real data with function-calculated data.
+    different_rivers: set[str] = set(["x", "y"])
+    different_rivers_actual: set[str] = rivers_with_station([a, b, c])
+
+    # Assertion statement.
+    assert different_rivers == different_rivers_actual
+
+def test_stations_by_river():
+    """
+    This function tests whether or not the #stations_by_river
+    function from the geo.py module functions normally.
+    """
+
+    # Construct fictitious data.
+    a = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "x", "a"
+    )
+    b = MonitoringStation(
+        "b", "b", "b", (1, 0), (0, 0), "x", "b"
+    )
+    c = MonitoringStation(
+        "c", "c", "c", (1, 1), (0, 0), "y", "c"
+    )
+
+    # Construct both hashtables.
+    table: dict[str, tuple[MonitoringStation]] = {
+        "x": [a, b],
+        "y": [c]
+    }
+    actual_table: dict[str, tuple[MonitoringStation]] = stations_by_river([a, b, c])
+
+    # Assertion statement.
+    assert table == actual_table
