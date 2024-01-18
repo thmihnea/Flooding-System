@@ -23,7 +23,7 @@ def fetch(url) -> any:
     return data
 
 
-def dump(data, filename) -> None:
+def dump(data: any, filename: str) -> None:
     """
     Save JSON object to file.
     """
@@ -44,7 +44,7 @@ def load(filename) -> any:
     return data
 
 
-def fetch_station_data(use_cache=True):
+def fetch_station_data(use_cache: bool = True) -> any:
     """
     Fetch data from Environment agency for all active river level
     monitoring stations via a REST API and return retrieved data as a
@@ -93,7 +93,7 @@ def fetch_station_data(use_cache=True):
     return data
 
 
-def fetch_latest_water_level_data(use_cache=False):
+def fetch_latest_water_level_data(use_cache: bool = False) -> any:
     """Fetch latest levels from all 'measures'. Returns JSON object"""
 
     # URL for retrieving data
@@ -122,7 +122,7 @@ def fetch_latest_water_level_data(use_cache=False):
     return data
 
 
-def fetch_measure_levels(measure_id, dt):
+def fetch_measure_levels(measure_id: str, dt: datetime) -> any:
     """Fetch measure levels from latest reading and going back a period
     dt. Return list of dates and a list of values.
 
