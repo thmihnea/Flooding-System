@@ -6,11 +6,12 @@ JSON objects fetched from the Internet and
 
 """
 
-from . import datafetcher
-from .station import MonitoringStation
+import datafetcher
+from station import MonitoringStation
 
 
-def build_station_list(use_cache=True):
+def build_station_list(use_cache = True) -> list[MonitoringStation]:
+
     """Build and return a list of all river level monitoring stations
     based on data fetched from the Environment agency. Each station is
     represented as a MonitoringStation object.

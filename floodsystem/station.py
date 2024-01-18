@@ -1,18 +1,19 @@
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
-"""This module provides a model for a monitoring station, and tools
+"""
+
+This module provides a model for a monitoring station, and tools
 for manipulating/modifying station data
 
 """
 
-
 class MonitoringStation:
-    """This class represents a river level monitoring station"""
+    """ This class represents a river level monitoring station """
 
     def __init__(self, station_id, measure_id, label, coord, typical_range,
                  river, town):
-        """Create a monitoring station."""
+        """ Create a monitoring station """
 
         self.station_id = station_id
         self.measure_id = measure_id

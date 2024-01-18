@@ -1,13 +1,17 @@
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
-"""This module contains utility functions.
+"""
+
+This module contains utility functions.
 
 """
 
 
-def sorted_by_key(x, i, reverse=False):
-    """For a list of lists/tuples, return list sorted by the ith
+def sorted_by_key(x: list[any], i: int, reverse = False) -> list[any]:
+    """
+    
+    For a list of lists/tuples, return list sorted by the ith
     component of the list/tuple, E.g.
 
     Sort on first entry of tuple::
@@ -26,4 +30,4 @@ def sorted_by_key(x, i, reverse=False):
     def key(element):
         return element[i]
 
-    return sorted(x, key=key, reverse=reverse)
+    return sorted(x, key = key, reverse = reverse)
