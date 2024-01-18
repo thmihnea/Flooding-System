@@ -104,11 +104,11 @@ def test_stations_by_river():
     )
 
     # Construct both hashtables.
-    table: dict[str, tuple[MonitoringStation]] = {
+    table: dict[str, list[MonitoringStation]] = {
         "x": [a, b],
         "y": [c]
     }
-    actual_table: dict[str, tuple[MonitoringStation]] = stations_by_river([a, b, c])
+    actual_table: dict[str, list[MonitoringStation]] = stations_by_river([a, b, c])
 
     # Assertion statement.
     assert table == actual_table
