@@ -49,7 +49,10 @@ def extract_result(list: list[tuple[MonitoringStation, float]]) -> list[tuple[st
 
     return results
 
-if __name__ == "__main__":
+def run():
+    """
+    This function demonstrates the functionality of this task.
+    """
 
     # Gather all stations from the cache and set up the testing point.
     stations: list[MonitoringStation] = build_station_list()
@@ -71,5 +74,8 @@ if __name__ == "__main__":
 
     print(f"The closest stations are: {closest}. \n")
     print(f"The furthest stations are: {furthest}. \n")
+
+if __name__ == "__main__":
+    run()
 
 

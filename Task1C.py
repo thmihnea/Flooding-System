@@ -32,7 +32,10 @@ def extract_data(data: list[MonitoringStation]) -> list[str]:
     stations.sort()
     return stations
 
-if __name__ == "__main__":
+def run():
+    """
+    This function demonstrates the functionality of this task.
+    """
 
     # Build the station list cache and setup the
     # Cambridge City Centre geolocation.
@@ -56,5 +59,8 @@ if __name__ == "__main__":
     extracted_data: list[str] = extract_data(within_radius)
     assert extracted_data == required_output
     print(extracted_data)
+
+if __name__ == "__main__":
+    run()
 
     

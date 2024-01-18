@@ -11,8 +11,11 @@ from floodsystem.geo import rivers_with_station, stations_by_river
 from floodsystem.station import MonitoringStation
 from floodsystem.stationdata import build_station_list
 
-if __name__ == "__main__":
-    
+def run():
+    """
+    This function demonstrates the functionality of this task.
+    """
+
     # Obtain the list of all available stations and
     # prepare all data.
     stations: list[MonitoringStation] = build_station_list()
@@ -31,6 +34,9 @@ if __name__ == "__main__":
         station_list: list[str] = [station.name for station in river_table[river]]
         station_list.sort()
         print(f"Stations located on {river} are: {station_list}.\n")
+
+if __name__ == "__main__":
+    run()
 
 
 
