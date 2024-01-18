@@ -1,6 +1,3 @@
-# Copyright (C) 2018 Garth N. Wells
-#
-# SPDX-License-Identifier: MIT
 """This module provides functionality for retrieving real-time and
 latest time history level data
 

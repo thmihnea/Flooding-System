@@ -1,6 +1,3 @@
-# Copyright (C) 2018 Garth N. Wells
-#
-# SPDX-License-Identifier: MIT
 """
 
 This module contains a collection of functions related to
@@ -8,10 +5,10 @@ geographical data.
 
 """
 
-from utils import sorted_by_key
-from station import MonitoringStation
-import stationdata
-import haversine
+from .utils import sorted_by_key
+from .station import MonitoringStation
+import warnings
+from haversine import haversine
 
 def stations_by_distance(stations:  list[MonitoringStation],
                          p:         tuple[float]) -> list[tuple[MonitoringStation, float]]:
@@ -34,16 +31,27 @@ def stations_by_distance(stations:  list[MonitoringStation],
 
     """
 
+    if not isinstance(stations, list):
+        raise RuntimeError("The specified stations parameter is not of type list[MonitoringStation]!")
+    
+    if not isinstance(p, tuple):
+        raise RuntimeError("The specified geolocation parameter is not of type tuple[float]!")
+    
+    if len(stations) == 0:
+        warnings.warn("The program provided an empty station list as a parameter inside geo.py!")
+        return []
+
     station_list: list[tuple[MonitoringStation, float]] = []
 
     for station in stations:
         station_location = station.coord
-        distance = haversine.haversine(station_location, p)
+        distance = haversine(station_location, p)
         station_list.append(
-            (station.name, distance)
+            (station, distance)
         )
 
     station_list = sorted_by_key(station_list, 1)
+    return station_list
 
 
 
