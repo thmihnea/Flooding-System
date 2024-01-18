@@ -65,13 +65,15 @@ def build_station_list(use_cache = True) -> list[MonitoringStation]:
     return stations
 
 
-def update_water_levels(stations):
-    """Attach level data contained in measure_data to stations"""
+def update_water_levels(stations) -> None:
+    """
+    Attach level data contained in measure_data to stations.
+    """
 
-    # Fetch level data
+    # Fetch level data.
     measure_data = datafetcher.fetch_latest_water_level_data()
 
-    # Build map from measure id to latest reading (value)
+    # Build map from measure id to latest reading (value).
     measure_id_to_value = dict()
     for measure in measure_data['items']:
         if 'latestReading' in measure:
@@ -79,13 +81,13 @@ def update_water_levels(stations):
             measure_id = latest_reading['measure']
             measure_id_to_value[measure_id] = latest_reading['value']
 
-    # Attach latest reading to station objects
+    # Attach latest reading to station objects.
     for station in stations:
 
-        # Reset latestlevel
+        # Reset latest_level.
         station.latest_level = None
 
-        # Atach new level data (if available)
+        # Atach new level data (if available).
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
                 station.latest_level = measure_id_to_value[station.measure_id]

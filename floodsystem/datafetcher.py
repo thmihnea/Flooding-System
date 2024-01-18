@@ -1,5 +1,7 @@
-"""This module provides functionality for retrieving real-time and
-latest time history level data
+"""
+
+This module provides functionality for retrieving real-time and
+latest time history level data.
 
 """
 
@@ -11,22 +13,31 @@ import dateutil.parser
 import requests
 
 
-def fetch(url):
-    """Fetch data from url and return fetched JSON object"""
+def fetch(url) -> any:
+    """
+    Fetch data from url and return fetched JSON object.
+    """
+
     r = requests.get(url)
     data = r.json()
     return data
 
 
-def dump(data, filename):
-    """Save JSON object to file"""
+def dump(data, filename) -> None:
+    """
+    Save JSON object to file.
+    """
+
     f = open(filename, 'w')
     data = json.dump(data, f)
     f.close()
 
 
-def load(filename):
-    """Load JSON object from file"""
+def load(filename) -> any:
+    """
+    Load JSON object from file.
+    """
+
     f = open(filename, 'r')
     data = json.load(f)
     f.close()
@@ -34,7 +45,8 @@ def load(filename):
 
 
 def fetch_station_data(use_cache=True):
-    """Fetch data from Environment agency for all active river level
+    """
+    Fetch data from Environment agency for all active river level
     monitoring stations via a REST API and return retrieved data as a
     JSON object.
 
@@ -43,7 +55,7 @@ def fetch_station_data(use_cache=True):
     retrieval over the Internet and avoids excessive calls to the
     Environment Agency service.
 
-    Args:
+    Parameters:
         use_cache: If ``True``, use file cache. Otherwise fetch data
             over the Internet.
 
