@@ -72,6 +72,4 @@ if __name__ == "__main__":
     print(f"The closest stations are: {closest}. \n")
     print(f"The furthest stations are: {furthest}. \n")
 
-    print(haversine.haversine((0, 0), (2, 0)))
-
 
