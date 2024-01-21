@@ -171,13 +171,12 @@ def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> lis
     description to be completed when it starts working
     
     '''
+
     list_of_rivers = []
 
     for station in stations:
         river: str = station.river
-        if river in list_of_rivers:
-            break
-        else:
+        if river not in list_of_rivers:
             list_of_rivers.append(river)
     
     for i in range(0, len(list_of_rivers)):
@@ -193,7 +192,7 @@ def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> lis
         n = 0
         while n == 0:
             for j in range(0, len(sorted_list_of_rivers)):
-                if list_of_rivers[i][1] >= sorted_list_of_rivers[j][0]:
+                if list_of_rivers[i][1] >= int(sorted_list_of_rivers[j][1]):
                     sorted_list_of_rivers.insert(j, list_of_rivers[i])
                     n = 1
 
@@ -207,3 +206,4 @@ def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> lis
 
     for k in range(0, N):
         list_of_first_N_rivers.append(sorted_list_of_rivers[k])
+    return list_of_first_N_rivers
