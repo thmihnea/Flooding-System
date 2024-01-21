@@ -9,6 +9,7 @@ from .utils import sorted_by_key
 from .station import MonitoringStation
 import warnings
 from haversine import haversine
+from floodsystem.stationdata import build_station_list
 
 def stations_by_distance(stations:  list[MonitoringStation],
                          p:         tuple[float]) -> list[tuple[MonitoringStation, float]]:
@@ -168,42 +169,35 @@ def stations_by_river(stations: list[MonitoringStation]) -> dict[str, list[Monit
 def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> list[tuple]:
     '''
     
-    description to be completed when it starts working
+    Gives a list of tuples, with the first term of the tuple being the river name
+    and the second term in the tuple being the number of stations on that river. 
+
+    Parameters:
+    
+    stations: a list of monitoringstation objects
+
+    N: the number of rivers from the top of the list which are given
+
+    Return:
+
+    the sorted list of tuples
     
     '''
-
-    list_of_rivers = []
-
-    for station in stations:
-        river: str = station.river
-        if river not in list_of_rivers:
-            list_of_rivers.append(river)
-    
-    for i in range(0, len(list_of_rivers)):
-        list_of_rivers[i] = [list_of_rivers[i], 0]
-        for station in stations:
-            river: str = station.river
-            if river == list_of_rivers[i][0]:
-                list_of_rivers[i][1] += 1
-        list_of_rivers[i] = (list_of_rivers[i][0], list_of_rivers[i][1])
-
-    sorted_list_of_rivers = [["null", 0]]
-    for i in range(0, len(list_of_rivers)):
-        n = 0
-        while n == 0:
-            for j in range(0, len(sorted_list_of_rivers)):
-                if list_of_rivers[i][1] >= int(sorted_list_of_rivers[j][1]):
-                    sorted_list_of_rivers.insert(j, list_of_rivers[i])
-                    n = 1
-
-    list_of_first_N_rivers = []
-    p = 0
-    while p == 0:
-        if sorted_list_of_rivers[N-1][1] == sorted_list_of_rivers[N][1]:
-            N += 1
+    river_table: dict[str, list[MonitoringStation]] = stations_by_river(stations)
+    stations: list[MonitoringStation] = build_station_list()
+    rivers: list[str] = rivers_with_station(stations)
+    list_of_rivers_and_number_of_stations = []
+    for river in rivers:
+        station_list: list[str] = [station.name for station in river_table[river]]
+        list_of_rivers_and_number_of_stations.append((river, int(len(station_list))))
+    sorted_list = sorted(list_of_rivers_and_number_of_stations, key = lambda N: N[1], reverse = True)
+    n = 0
+    while n == 0:
+        if sorted_list[N-1][1] == sorted_list[N][1]:
+            N +=1
         else:
-            p == 1
-
-    for k in range(0, N):
-        list_of_first_N_rivers.append(sorted_list_of_rivers[k])
-    return list_of_first_N_rivers
+            n = 1
+    first_N_sorted = []
+    for i in range(N):
+        first_N_sorted.append(sorted_list[i])
+    return(first_N_sorted)
