@@ -165,6 +165,45 @@ def stations_by_river(stations: list[MonitoringStation]) -> dict[str, list[Monit
 
     return table
 
+def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> list[tuple]:
+    '''
+    
+    description to be completed when it starts working
+    
+    '''
+    list_of_rivers = []
 
+    for station in stations:
+        river: str = station.river
+        if river in list_of_rivers:
+            break
+        else:
+            list_of_rivers.append(river)
+    
+    for i in range(0, len(list_of_rivers)):
+        list_of_rivers[i] = [list_of_rivers[i], 0]
+        for station in stations:
+            river: str = station.river
+            if river == list_of_rivers[i][0]:
+                list_of_rivers[i][1] += 1
+        list_of_rivers[i] = (list_of_rivers[i][0], list_of_rivers[i][1])
 
+    sorted_list_of_rivers = [["null", 0]]
+    for i in range(0, len(list_of_rivers)):
+        n = 0
+        while n == 0:
+            for j in range(0, len(sorted_list_of_rivers)):
+                if list_of_rivers[i][1] >= sorted_list_of_rivers[j][0]:
+                    sorted_list_of_rivers.insert(j, list_of_rivers[i])
+                    n = 1
 
+    list_of_first_N_rivers = []
+    p = 0
+    while p == 0:
+        if sorted_list_of_rivers[N-1][1] == sorted_list_of_rivers[N][1]:
+            N += 1
+        else:
+            p == 1
+
+    for k in range(0, N):
+        list_of_first_N_rivers.append(sorted_list_of_rivers[k])
