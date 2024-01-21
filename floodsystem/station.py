@@ -39,3 +39,24 @@ class MonitoringStation:
         d += "   river:         {}\n".format(self.river)
         d += "   typical range: {}".format(self.typical_range)
         return d
+    
+    def typical_range_consistent(self):
+        check = 0
+        if type(self.typical_range) == tuple:
+            if len(self.typical_range) == 2:   
+                if self.typical_range[0] < self.typical_range[1]:
+                    check = 1
+                    return True
+        if check == 0:
+            return False
+
+from floodsystem.stationdata import build_station_list
+
+def inconsistent_typical_range_stations(stations):
+    inconsistent_stations = []
+    stations: list[MonitoringStation] = build_station_list()
+    for station in stations:
+        if MonitoringStation.typical_range_consistent(station) == False:
+            inconsistent_stations.append(station.name)
+    return inconsistent_stations
+        

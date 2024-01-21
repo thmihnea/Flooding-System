@@ -186,18 +186,23 @@ def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> lis
     river_table: dict[str, list[MonitoringStation]] = stations_by_river(stations)
     stations: list[MonitoringStation] = build_station_list()
     rivers: list[str] = rivers_with_station(stations)
+
     list_of_rivers_and_number_of_stations = []
+
     for river in rivers:
         station_list: list[str] = [station.name for station in river_table[river]]
         list_of_rivers_and_number_of_stations.append((river, int(len(station_list))))
     sorted_list = sorted(list_of_rivers_and_number_of_stations, key = lambda N: N[1], reverse = True)
+
     n = 0
     while n == 0:
         if sorted_list[N-1][1] == sorted_list[N][1]:
             N +=1
         else:
             n = 1
+    
     first_N_sorted = []
     for i in range(N):
         first_N_sorted.append(sorted_list[i])
+        
     return(first_N_sorted)
