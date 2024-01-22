@@ -40,7 +40,7 @@ class MonitoringStation:
         d += "   typical range: {}".format(self.typical_range)
         return d
     
-    def typical_range_consistent(self):
+    def typical_range_consistent(self) -> bool:
         if not isinstance(self.typical_range, tuple):
             return False
         if not isinstance(self.typical_range[0], float) or not isinstance(self.typical_range[1], float):
@@ -57,7 +57,7 @@ class MonitoringStation:
 
         return (current_level - typical_low) / (typical_high - typical_low)
 
-def inconsistent_typical_range_stations(stations: list[MonitoringStation]):
+def inconsistent_typical_range_stations(stations: list[MonitoringStation]) -> list[MonitoringStation]:
     return [station for station in stations if not station.typical_range_consistent() or station.typical_range is None]
 
         
