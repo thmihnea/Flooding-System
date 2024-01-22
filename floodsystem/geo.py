@@ -9,6 +9,7 @@ from .utils import sorted_by_key
 from .station import MonitoringStation
 import warnings
 from haversine import haversine
+from floodsystem.stationdata import build_station_list
 
 def stations_by_distance(stations:  list[MonitoringStation],
                          p:         tuple[float]) -> list[tuple[MonitoringStation, float]]:
@@ -165,6 +166,48 @@ def stations_by_river(stations: list[MonitoringStation]) -> dict[str, list[Monit
 
     return table
 
+def rivers_by_station_number(stations: list[MonitoringStation], N: int) -> list[tuple[str, int]]:
+    """
+    
+    Gives a list of tuples, with the first term of the tuple being the river name
+    and the second term in the tuple being the number of stations on that river. 
 
+    Parameters:
+    
+    stations: a list of monitoringstation objects
 
+    N: the number of rivers from the top of the list which are given
 
+    Return:
+
+    the sorted list of tuples
+    
+    """
+    if not isinstance(stations, list):
+        raise RuntimeError("The given parameter is not of type list[MonitoringStation]!")
+    
+    if not isinstance(N, int):
+        raise RuntimeError("The given parameter is not an integer!")
+
+    # Obtain the hash table, map it to a list of tuples and sort it in reverse order.
+    river_table: dict[str, list[MonitoringStation]] = stations_by_river(stations)
+    mapping: list[tuple[str, int]] = [(river, len(river_table[river])) for river in river_table]
+    mapping = sorted_by_key(mapping, 1, True)
+
+    counter: int = 0
+    current: int = None
+
+    result: list[tuple[str, int]] = []
+
+    # Obtain first N elements including duplicates by list traversal.
+    # We update the variable #current to keep track of the last element visited
+    # and we then update counter accordingly.
+    for entry in mapping:
+        if current == None or current != entry[1]:
+            current = entry[1]
+            counter += 1
+            if counter > N:
+                break
+        result.append(entry)
+
+    return result

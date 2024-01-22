@@ -11,7 +11,7 @@ from floodsystem.geo import rivers_with_station, stations_by_river
 from floodsystem.station import MonitoringStation
 from floodsystem.stationdata import build_station_list
 
-def run():
+def run() -> None:
     """
     This function demonstrates the functionality of this task.
     """

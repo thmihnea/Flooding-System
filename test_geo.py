@@ -5,10 +5,10 @@ for the geo.py module within this project.
 
 """
 
-from floodsystem.geo import stations_by_distance, stations_within_radius, rivers_with_station, stations_by_river
+from floodsystem.geo import stations_by_distance, stations_within_radius, rivers_with_station, stations_by_river, rivers_by_station_number
 from floodsystem.station import MonitoringStation
 
-def test_distance():
+def test_distance() -> None:
     """
     This function asserts that the distance between a
     list of stations is calculated correctly.
@@ -39,7 +39,7 @@ def test_distance():
     # Assertion statement.
     assert distance_actual == distance_function
 
-def test_within_radius():
+def test_within_radius() -> None:
     """
     This function asserts that a fictive set of
     MonitoringStation objects are within a certain radius
@@ -62,7 +62,7 @@ def test_within_radius():
     # Assertion statement.
     assert within_radius_actual == within_radius
 
-def test_rivers_with_station():
+def test_rivers_with_station() -> None:
     """
     This function tests whether or not the geo.py #rivers_with_station
     function works normally.
@@ -86,7 +86,7 @@ def test_rivers_with_station():
     # Assertion statement.
     assert different_rivers == different_rivers_actual
 
-def test_stations_by_river():
+def test_stations_by_river() -> None:
     """
     This function tests whether or not the #stations_by_river
     function from the geo.py module functions normally.
@@ -112,3 +112,32 @@ def test_stations_by_river():
 
     # Assertion statement.
     assert table == actual_table
+
+def test_rivers_by_station_number() -> None:
+    a = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "x", "a"
+    )
+    b = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "x", "a"
+    )
+    c = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "y", "a"
+    )
+    d = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "z", "a"
+    )
+    e = MonitoringStation(
+        "a", "a", "a", (0, 0), (0, 0), "y", "a"
+    )
+
+    first_result = rivers_by_station_number([a, b, c, d], 2)
+    assert first_result == [("x", 2), ("y", 1), ("z", 1)]
+
+    second_result = rivers_by_station_number([a, b, c, d, e], 2)
+    assert second_result == [("x", 2), ("y", 2), ("z", 1)]
+
+    third_result = rivers_by_station_number([a, b], 3)
+    assert third_result == [("x", 2)]
+
+    fourth_result = rivers_by_station_number([a, b, c], 4)
+    assert fourth_result == [("x", 2), ("y", 1)]
