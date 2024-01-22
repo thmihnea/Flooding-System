@@ -50,11 +50,8 @@ class MonitoringStation:
         if check == 0:
             return False
 
-from .stationdata import build_station_list
-
 def inconsistent_typical_range_stations(stations):
     inconsistent_stations = []
-    stations: list[MonitoringStation] = build_station_list()
     for station in stations:
         if MonitoringStation.typical_range_consistent(station) == False:
             inconsistent_stations.append(station.name)
