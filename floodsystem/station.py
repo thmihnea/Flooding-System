@@ -50,7 +50,7 @@ class MonitoringStation:
         if check == 0:
             return False
 
-from floodsystem.stationdata import build_station_list
+from .stationdata import build_station_list
 
 def inconsistent_typical_range_stations(stations):
     inconsistent_stations = []
