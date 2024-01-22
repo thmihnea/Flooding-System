@@ -17,14 +17,15 @@ def run() -> None:
     """
     This function demonstrates the functionality of this task.
     """
-    #builds station list
+
+    # Builds station list.
     stations: list[MonitoringStation] = build_station_list()
 
-    #executes test function
-    inconsistent_station_list = inconsistent_typical_range_stations(stations)
+    # Executes test function.
+    inconsistent: list[str] = [station.name for station in inconsistent_typical_range_stations(stations)]
 
-    #prints output
-    print("The list of inconsistent stations is:", sorted(inconsistent_station_list))
+    # Prints required output.
+    print(f"Inconsistent stations: {sorted(inconsistent)}")
 
 if __name__ == "__main__":
     run()

@@ -41,19 +41,13 @@ class MonitoringStation:
         return d
     
     def typical_range_consistent(self):
-        check = 0
-        if type(self.typical_range) == tuple:
-            if len(self.typical_range) == 2:   
-                if self.typical_range[0] < self.typical_range[1]:
-                    check = 1
-                    return True
-        if check == 0:
+        if not isinstance(self.typical_range, tuple):
             return False
+        if not isinstance(self.typical_range[0], float) or not isinstance(self.typical_range[1], float):
+            return False
+        return len(self.typical_range) == 2 and self.typical_range[0] < self.typical_range[1]
 
-def inconsistent_typical_range_stations(stations):
-    inconsistent_stations = []
-    for station in stations:
-        if MonitoringStation.typical_range_consistent(station) == False:
-            inconsistent_stations.append(station.name)
-    return inconsistent_stations
+def inconsistent_typical_range_stations(stations: list[MonitoringStation]):
+    return [station for station in stations if not station.typical_range_consistent() or station.typical_range is None]
+
         

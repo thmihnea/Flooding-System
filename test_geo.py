@@ -141,6 +141,3 @@ def test_rivers_by_station_number() -> None:
 
     fourth_result = rivers_by_station_number([a, b, c], 4)
     assert fourth_result == [("x", 2), ("y", 1)]
-
-if __name__ == "__main__":
-    test_rivers_by_station_number()
