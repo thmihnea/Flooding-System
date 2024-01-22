@@ -4,7 +4,7 @@
 
 from floodsystem.stationdata import build_station_list
 
-def run():
+def run() -> None:
     """Requirements for Task 1A"""
 
     # Build list of stations

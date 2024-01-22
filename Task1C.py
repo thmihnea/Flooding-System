@@ -12,7 +12,7 @@ from floodsystem.stationdata import build_station_list
 from floodsystem.station import MonitoringStation
 from floodsystem.utils import extract_station_names
 
-def run():
+def run() -> None:
     """
     This function demonstrates the functionality of this task.
     """

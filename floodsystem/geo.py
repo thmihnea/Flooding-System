@@ -166,8 +166,8 @@ def stations_by_river(stations: list[MonitoringStation]) -> dict[str, list[Monit
 
     return table
 
-def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> list[tuple]:
-    '''
+def rivers_by_station_number(stations: list[MonitoringStation], N: int) -> list[tuple[str, int]]:
+    """
     
     Gives a list of tuples, with the first term of the tuple being the river name
     and the second term in the tuple being the number of stations on that river. 
@@ -182,27 +182,32 @@ def rivers_by_station_number(stations: list[MonitoringStation], N: float) -> lis
 
     the sorted list of tuples
     
-    '''
-    river_table: dict[str, list[MonitoringStation]] = stations_by_river(stations)
-    stations: list[MonitoringStation] = build_station_list()
-    rivers: list[str] = rivers_with_station(stations)
-
-    list_of_rivers_and_number_of_stations = []
-
-    for river in rivers:
-        station_list: list[str] = [station.name for station in river_table[river]]
-        list_of_rivers_and_number_of_stations.append((river, int(len(station_list))))
-    sorted_list = sorted(list_of_rivers_and_number_of_stations, key = lambda N: N[1], reverse = True)
-
-    n = 0
-    while n == 0:
-        if sorted_list[N-1][1] == sorted_list[N][1]:
-            N +=1
-        else:
-            n = 1
+    """
+    if not isinstance(stations, list):
+        raise RuntimeError("The given parameter is not of type list[MonitoringStation]!")
     
-    first_N_sorted = []
-    for i in range(N):
-        first_N_sorted.append(sorted_list[i])
-        
-    return(first_N_sorted)
+    if not isinstance(N, int):
+        raise RuntimeError("The given parameter is not an integer!")
+
+    # Obtain the hash table, map it to a list of tuples and sort it in reverse order.
+    river_table: dict[str, list[MonitoringStation]] = stations_by_river(stations)
+    mapping: list[tuple[str, int]] = [(river, len(river_table[river])) for river in river_table]
+    mapping = sorted_by_key(mapping, 1, True)
+
+    counter: int = 0
+    current: int = None
+
+    result: list[tuple[str, int]] = []
+
+    # Obtain first N elements including duplicates by list traversal.
+    # We update the variable #current to keep track of the last element visited
+    # and we then update counter accordingly.
+    for entry in mapping:
+        if current == None or current != entry[1]:
+            current = entry[1]
+            counter += 1
+            if counter > N:
+                break
+        result.append(entry)
+
+    return result
