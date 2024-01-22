@@ -46,6 +46,16 @@ class MonitoringStation:
         if not isinstance(self.typical_range[0], float) or not isinstance(self.typical_range[1], float):
             return False
         return len(self.typical_range) == 2 and self.typical_range[0] < self.typical_range[1]
+    
+    def relative_water_level(self) -> float:
+        if not self.typical_range_consistent() or self.latest_level is None:
+            return None
+        
+        typical_low: float = self.typical_range[0]
+        typical_high: float = self.typical_range[1]
+        current_level: float = self.latest_level
+
+        return (current_level - typical_low) / (typical_high - typical_low)
 
 def inconsistent_typical_range_stations(stations: list[MonitoringStation]):
     return [station for station in stations if not station.typical_range_consistent() or station.typical_range is None]

@@ -3,24 +3,24 @@
 # SPDX-License-Identifier: MIT
 
 from floodsystem.stationdata import build_station_list, update_water_levels
+from floodsystem.station import MonitoringStation
 
 
-def run():
+def run() -> None:
     # Build list of stations
-    stations = build_station_list()
+    stations: list[MonitoringStation] = build_station_list()
 
     # Update latest level data for all stations
     update_water_levels(stations)
 
     # Print station and latest level for first 5 stations in list
-    names = [
+    names: list[str] = [
         'Bourton Dickler', 'Surfleet Sluice', 'Gaw Bridge', 'Hemingford',
         'Swindon'
     ]
     for station in stations:
         if station.name in names:
-            print("Station name and current level: {}, {}".format(
-                station.name, station.latest_level))
+            print(f"Station name and current level: {station.name}, {station.latest_level}.")
 
     # Alternative implementation
     # for station in [s for s in stations if s.name in names]:
