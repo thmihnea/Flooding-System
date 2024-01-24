@@ -19,23 +19,23 @@ import datetime
 
 def run() -> None:
 
-    #builds list of stations
+    # Builds list of stations.
     stations: list[MonitoringStation] = build_station_list()
 
-    #determines number of graphs generated
+    # Determines number of graphs generated.
     N: int = 5
 
-    #updates water levels
+    # Updates water levels.
     update_water_levels(stations)
 
-    #sets up time
+    # Sets up time.
     dt: int = 10
-    dt=datetime.timedelta(days=dt)
+    dt = datetime.timedelta(days=dt)
 
-    #determines N stations with the highest relative water level
-    N_stations = stations_highest_rel_level(stations, N)
+    # Determines N stations with the highest relative water level.
+    N_stations: list[MonitoringStation] = stations_highest_rel_level(stations, N)
 
-    #plots the N stations water level over the given time period
+    # Plots the N stations water level over the given time period.
     for station in N_stations:
         dates, levels = fetch_measure_levels(station.measure_id, dt)
         plot_water_levels(station, dates, levels)

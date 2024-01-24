@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-from floodsystem.station import MonitoringStation
+from .station import MonitoringStation
 
-def plot_water_levels(station: list[MonitoringStation], dates: list, levels: list):   
+def plot_water_levels(station: list[MonitoringStation], dates: list, levels: list) -> None:   
 
-    '''
+    """
 
     Given a MonitoringStation object, return 
     a MatPlotLib plot showing the variation of the water 
@@ -16,10 +16,13 @@ def plot_water_levels(station: list[MonitoringStation], dates: list, levels: lis
     dates: The selection of dates/times from which the data is taken
     levels: The historical water levels across the time period
 
-    '''
+    """
 
-    lower_bound = station.typical_range[0]
-    upper_bound = station.typical_range[1]
+    # Retrieve lower and upper bound for typical range.
+    lower_bound: float = station.typical_range[0]
+    upper_bound: float = station.typical_range[1]
+
+    # Prepare plotting data.
     plt.plot(dates, levels)
     plt.axhline(lower_bound)
     plt.axhline(upper_bound)
@@ -27,5 +30,6 @@ def plot_water_levels(station: list[MonitoringStation], dates: list, levels: lis
     plt.xticks(rotation = 45)
     plt.title(station.name)
 
+    # Plot.
     plt.tight_layout()
     plt.show()
