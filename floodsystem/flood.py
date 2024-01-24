@@ -48,5 +48,6 @@ def stations_highest_rel_level(stations: list[MonitoringStation],
     result: list[tuple[MonitoringStation, float]] = [(station, station.relative_water_level()) 
                                                      for station in stations 
                                                      if station.latest_level != None 
-                                                     and station.relative_water_level() != None]
+                                                     and station.relative_water_level() != None
+                                                     and station.latest_level < 1000]
     return [entry[0] for entry in sorted_by_key(result, 1, True)][:N]
