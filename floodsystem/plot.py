@@ -37,10 +37,26 @@ def plot_water_levels(station: list[MonitoringStation], dates: list, levels: lis
     plt.show()
 
 def plot_water_level_with_fit(station, dates, levels, p):
+    """
+    
+    Given a specific station object, the dates, the
+    corresponding water levels and a polynomial degree p,
+    plot the least-squares line of best fit, as generated
+    using polyfit.
+
+    Parameters:
+
+    station:        The station in cause.
+    dates:          The list containing all dates.
+    levels:         The list containing all water levels.
+    p:              The degree of the polynomial.
+    
+    """
 
     # Retrieve lower and upper bound for typical range.
     lower_bound: float = station.typical_range[0]
     upper_bound: float = station.typical_range[1]
+
     # Plot raw data.
     plt.plot(dates, levels)
     plt.axhline(lower_bound)
@@ -50,8 +66,9 @@ def plot_water_level_with_fit(station, dates, levels, p):
     plt.title(station.name)
 
     poly, d0 = polyfit(dates, levels, p)
-    dates  = matplotlib.dates.date2num(dates)
+    dates = matplotlib.dates.date2num(dates)
     plt.plot(dates, poly(dates - d0))
+
     # Plot.
     plt.tight_layout()
     plt.show()

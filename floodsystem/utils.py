@@ -8,6 +8,8 @@ This module contains utility functions.
 """
 
 from .station import MonitoringStation
+from .datafetcher import fetch_measure_levels
+from datetime import datetime
 
 def sorted_by_key(x: list[any], i: int, reverse = False) -> list[any]:
     """
@@ -90,3 +92,25 @@ def prettified_distance_data(list: list[tuple[MonitoringStation, float]]) -> lis
         results.append(result)
 
     return results
+
+def is_invalid_data(dates: list, levels: list) -> bool:
+    """
+
+    Given a MonitoringStation object, check whether or
+    not the fetch_measure_levels retrieved data is valid, i.e.
+    if the data exists and if there are just as many levels
+    as there are dates.
+
+    Parameters:
+
+    dates:  All the dates at which different levels were
+            recorded.
+    levels: The recorded levels at those dates.
+
+    Returns:
+
+    True if data is invalid, False otherwise.
+
+    """
+
+    return len(dates) == 0 or len(levels) == 0 or len(dates) != len(levels)
