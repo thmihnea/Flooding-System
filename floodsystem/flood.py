@@ -1,5 +1,7 @@
 from .station import MonitoringStation
 from .utils import sorted_by_key
+from .datafetcher import fetch_just_levels, fetch_measure_levels
+import datetime
 
 def stations_level_over_threshold(stations: list[MonitoringStation], tol: float):
     """
@@ -51,3 +53,28 @@ def stations_highest_rel_level(stations: list[MonitoringStation],
                                                      and station.relative_water_level() != None
                                                      and station.latest_level < 1000]
     return [entry[0] for entry in sorted_by_key(result, 1, True)][:N]
+
+def flood_characterisation(station):
+
+    # Sets up time.
+    dt: int = 2
+    dt = datetime.timedelta(days=dt)
+
+
+    characteristic = "none"
+
+    if type(station.typical_range) == tuple and type(station.latest_level) == float: 
+        if station.latest_level > station.typical_range[1]:
+            characteristic = 'at risk'
+        else:
+            characteristic = 'low risk'
+    levels   = fetch_just_levels(station.measure_id, dt)
+    if levels != [] and characteristic  == 'at risk':
+        average = sum(levels)/len(levels)
+        if average/station.typical_range[1] < 1.2:
+            characteristic = 'medium risk'
+        elif average/station.typical_range[1] < 2:
+            characteristic = 'high risk'
+        else:
+            characteristic = 'severe risk'
+    return characteristic
