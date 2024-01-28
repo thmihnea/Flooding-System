@@ -1,7 +1,15 @@
 from .station import MonitoringStation
 from .utils import sorted_by_key
 from .datafetcher import fetch_just_levels, fetch_measure_levels
+from enum import Enum
 import datetime
+
+class RiskLevel(Enum):
+
+    NO_RISK = "No Risk"
+    LOW_RISK = "Low Risk"
+    MEDIUM_RISK = "Medium Risk"
+    SEVERE_RISK = "Severe Risk"
 
 def stations_level_over_threshold(stations: list[MonitoringStation], tol: float):
     """
@@ -88,7 +96,7 @@ def flood_characterisation(station):
 
     # For all at risk stations, categorises them into diffferent risk levels based on their average level over the past 2 days. 
     if characteristic  == 'at risk':
-        levels   = fetch_just_levels(station.measure_id, dt)
+        levels = fetch_just_levels(station.measure_id, dt)
         if levels != []:
             try:
                 average = sum(levels)/len(levels)
