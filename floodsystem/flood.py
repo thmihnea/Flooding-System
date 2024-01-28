@@ -6,10 +6,9 @@ import datetime
 
 class RiskLevel(Enum):
 
-    NO_RISK = "No Risk"
-    LOW_RISK = "Low Risk"
-    MEDIUM_RISK = "Medium Risk"
-    SEVERE_RISK = "Severe Risk"
+    LOW_RISK = ["Low Risk", 1]
+    MEDIUM_RISK = ["Medium Risk", 2]
+    SEVERE_RISK = ["Severe Risk", 3]
 
 def stations_level_over_threshold(stations: list[MonitoringStation], tol: float):
     """
@@ -62,52 +61,79 @@ def stations_highest_rel_level(stations: list[MonitoringStation],
                                                      and station.latest_level < 1000]
     return [entry[0] for entry in sorted_by_key(result, 1, True)][:N]
 
-def flood_characterisation(station):
-
-
-    '''
+def retrieve_risky_stations(stations: list[MonitoringStation]) -> dict[RiskLevel, list[str]]:
+    """
     
-    Given a specific station, will return a 
-    specific risk level based on that stations data. 
+    Given a list of stations, assess the risk of
+    each stations in relationship with its water level, and
+    return a dictionary mapping risk levels to certain lists of stations.
 
     Parameters:
 
-    station: The MonitoringStation object provided
+    stations:       The list of stations we are considering
 
-    Return:
+    Returns:
 
-    The risk level of that station
+    A table containing the risk assessed stations.
     
-    '''
+    """
+    table: dict[RiskLevel, list[MonitoringStation]] = dict()
+    for entry in RiskLevel:
+        tolerance: int = entry.value[1]
+        risky_stations: list[MonitoringStation] = stations_level_over_threshold(
+            stations,
+            tolerance
+        )
+        risky_stations = [o[0].name for o in risky_stations]
+        table[entry] = risky_stations
+    return table
 
-    # Sets up time.
-    dt: int = 2
-    dt = datetime.timedelta(days=dt)
+# def flood_characterisation(station):
 
-    # Sets up risk characteristic. 
-    characteristic = "none"
 
-    # Classifies all stations with a current level within the typical range as low risk.
-    if type(station.typical_range) == tuple and type(station.latest_level) == float: 
-        if station.latest_level > station.typical_range[1]:
-            characteristic = 'at risk'
-        else:
-            characteristic = 'low risk'
+#     '''
+    
+#     Given a specific station, will return a 
+#     specific risk level based on that stations data. 
 
-    # For all at risk stations, categorises them into diffferent risk levels based on their average level over the past 2 days. 
-    if characteristic  == 'at risk':
-        levels = fetch_just_levels(station.measure_id, dt)
-        if levels != []:
-            try:
-                average = sum(levels)/len(levels)
-                if average/station.typical_range[1] < 1.2:
-                    characteristic = 'medium risk'
-                elif average/station.typical_range[1] < 2:
-                    characteristic = 'high risk'
-                else:
-                    characteristic = 'severe risk'
-            except:
-                pass    
-        else:
-            characteristic = 'low risk'
-    return characteristic
+#     Parameters:
+
+#     station: The MonitoringStation object provided
+
+#     Return:
+
+#     The risk level of that station
+    
+#     '''
+
+#     # Sets up time.
+#     dt: int = 2
+#     dt = datetime.timedelta(days=dt)
+
+#     # Sets up risk characteristic. 
+#     characteristic = "none"
+
+#     # Classifies all stations with a current level within the typical range as low risk.
+#     if type(station.typical_range) == tuple and type(station.latest_level) == float: 
+#         if station.latest_level > station.typical_range[1]:
+#             characteristic = 'at risk'
+#         else:
+#             characteristic = 'low risk'
+
+#     # For all at risk stations, categorises them into diffferent risk levels based on their average level over the past 2 days. 
+#     if characteristic  == 'at risk':
+#         levels = fetch_just_levels(station.measure_id, dt)
+#         if levels != []:
+#             try:
+#                 average = sum(levels)/len(levels)
+#                 if average/station.typical_range[1] < 1.2:
+#                     characteristic = 'medium risk'
+#                 elif average/station.typical_range[1] < 2:
+#                     characteristic = 'high risk'
+#                 else:
+#                     characteristic = 'severe risk'
+#             except:
+#                 pass    
+#         else:
+#             characteristic = 'low risk'
+#     return characteristic
