@@ -78,12 +78,16 @@ def retrieve_risky_stations(stations: list[MonitoringStation]) -> dict[RiskLevel
     
     """
     table: dict[RiskLevel, list[MonitoringStation]] = dict()
-    for entry in RiskLevel:
+    ordered_entries: list[RiskLevel] = [RiskLevel.SEVERE_RISK, RiskLevel.MEDIUM_RISK, RiskLevel.LOW_RISK]
+    for entry in ordered_entries:
         tolerance: int = entry.value[1]
-        risky_stations: list[MonitoringStation] = stations_level_over_threshold(
+        risky_stations: list[tuple[MonitoringStation, float]] = stations_level_over_threshold(
             stations,
             tolerance
         )
+        for item in risky_stations:
+            station: MonitoringStation = item[0]
+            stations.remove(station)
         risky_stations = [o[0].name for o in risky_stations]
         table[entry] = risky_stations
     return table

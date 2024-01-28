@@ -1,22 +1,20 @@
-from floodsystem.flood import flood_characterisation
+from floodsystem.flood import retrieve_risky_stations, RiskLevel
 from floodsystem.station import MonitoringStation
 
 def test_create_monitoring_station():
 
-    # Create a station
-    s_id = "test-s-id"
-    m_id = "test-m-id"
-    label = "some station"
-    coord = (-2.0, 4.0)
-    trange = (-2.3, 3.4445)
-    river = "River X"
-    town = "My Town"
+    a: MonitoringStation = MonitoringStation(
+        "a", "a", "a", (0, 0), (0.0, 1.0), "a", "a"
+    )
+    a.latest_level = 1.5
 
- 
-    s = MonitoringStation(s_id, m_id, label, coord, trange, river, town)
+    b: MonitoringStation = MonitoringStation(
+        "b", "b", "b", (0, 0), (0.0, 1.0), "b", "b"
+    )
+    b.latest_level = 3.5
 
-    #assign latest_level value for low risk
-    s.latest_level = 2.0
-    assert flood_characterisation(s) == 'low risk'
-
+    result: dict[RiskLevel, list[str]] = retrieve_risky_stations([a, b])
+    
+    assert result[RiskLevel.SEVERE_RISK] == ["b"]
+    assert result[RiskLevel.LOW_RISK] == ["a"]
 
