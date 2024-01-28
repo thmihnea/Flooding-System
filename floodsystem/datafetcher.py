@@ -153,3 +153,31 @@ def fetch_measure_levels(measure_id: str, dt: datetime) -> any:
         levels.append(measure['value'])
 
     return dates, levels
+
+def fetch_just_levels(measure_id: str, dt: datetime) -> any:
+
+    # Current time (UTC)
+    now = datetime.datetime.utcnow()
+
+    # Start time for data
+    start = now - dt
+
+    # Construct URL for fetching data
+    url_base = measure_id
+    url_options = "/readings/?_sorted&since=" + start.isoformat() + 'Z'
+    url = url_base + url_options
+
+    # Fetch data
+    data = fetch(url)
+
+
+    # Extract dates and levels
+    levels = []
+    for measure in data['items']:
+        # Convert date-time string to a datetime object
+        d = dateutil.parser.parse(measure['dateTime'])
+
+        # Append data
+        levels.append(measure['value'])
+
+    return levels

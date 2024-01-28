@@ -19,19 +19,15 @@ def run() -> None:
 
     # Sets up time.
     dt: int = 2
-    dt = datetime.timedelta(days = dt)
+    dt = datetime.timedelta(days=dt)
 
     # Sets up the degree of the polynomial.
-    valid_stations: list[MonitoringStation] = []
-    invalid_stations: list[MonitoringStation] = []
-
-    fetch_more: bool = True
-    M: int = N
-
-    # Fetch the first N stations that have valid data
-    # and are of highest relative level.
-    while fetch_more is True:
-        fetch_more = False
+    valid_stations = []
+    invalid_stations = []
+    n = 1
+    M = N
+    while n == 1:
+        n = 0
         N_stations: list[MonitoringStation] = stations_highest_rel_level(stations, M)
 
         for station in N_stations:
@@ -45,7 +41,7 @@ def run() -> None:
 
         M = N + len(invalid_stations)
                 
-    P: int = 4
+    P = 4
 
     # Plot everything.
     for station in valid_stations:
