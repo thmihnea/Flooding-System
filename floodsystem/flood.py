@@ -56,25 +56,50 @@ def stations_highest_rel_level(stations: list[MonitoringStation],
 
 def flood_characterisation(station):
 
+
+    '''
+    
+    Given a specific station, will return a 
+    specific risk level based on that stations data. 
+
+    Parameters:
+
+    station: The MonitoringStation object provided
+
+    Return:
+
+    The risk level of that station
+    
+    '''
+
     # Sets up time.
     dt: int = 2
     dt = datetime.timedelta(days=dt)
 
-
+    # Sets up risk characteristic. 
     characteristic = "none"
 
+    # Classifies all stations with a current level within the typical range as low risk.
     if type(station.typical_range) == tuple and type(station.latest_level) == float: 
         if station.latest_level > station.typical_range[1]:
             characteristic = 'at risk'
         else:
             characteristic = 'low risk'
-    levels   = fetch_just_levels(station.measure_id, dt)
-    if levels != [] and characteristic  == 'at risk':
-        average = sum(levels)/len(levels)
-        if average/station.typical_range[1] < 1.2:
-            characteristic = 'medium risk'
-        elif average/station.typical_range[1] < 2:
-            characteristic = 'high risk'
+
+    # For all at risk stations, categorises them into diffferent risk levels based on their average level over the past 2 days. 
+    if characteristic  == 'at risk':
+        levels   = fetch_just_levels(station.measure_id, dt)
+        if levels != []:
+            try:
+                average = sum(levels)/len(levels)
+                if average/station.typical_range[1] < 1.2:
+                    characteristic = 'medium risk'
+                elif average/station.typical_range[1] < 2:
+                    characteristic = 'high risk'
+                else:
+                    characteristic = 'severe risk'
+            except:
+                pass    
         else:
-            characteristic = 'severe risk'
+            characteristic = 'low risk'
     return characteristic
